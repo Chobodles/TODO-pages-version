@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoFlow — Welcome</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-welcome">
+
+    <nav>
+        <a href="index.html" class="logo">Todo<span>Flow</span></a>
+        <a href="index.html" class="nav-cta">Get started →</a>
+    </nav>
+
+    <main class="hero">
+        <span class="hero-eyebrow">Your personal task manager</span>
+        <h1>Get things<br><em>done</em>, simply.</h1>
+        <p class="hero-sub">A clean, no-fuss todo list that keeps your tasks in order and your mind at ease.</p>
+        <div class="hero-actions">
+            <a href="index.html" class="btn-primary">Get started</a>
+        </div>
+
+        <div class="floating-preview">
+            <div class="preview-card">
+                <div class="preview-header">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                    <span class="preview-title-bar">My Tasks · Today</span>
+                </div>
+                <div class="preview-item">
+                    <div class="preview-checkbox checked"></div>
+                    <span class="preview-label done">Review project proposal</span>
+                    <span class="preview-tag tag-done">Done</span>
+                </div>
+                <div class="preview-item">
+                    <div class="preview-checkbox checked"></div>
+                    <span class="preview-label done">Send follow-up email</span>
+                    <span class="preview-tag tag-done">Done</span>
+                </div>
+                <div class="preview-item">
+                    <div class="preview-checkbox"></div>
+                    <span class="preview-label">Prepare presentation deck</span>
+                    <span class="preview-tag tag-todo">Todo</span>
+                </div>
+                <div class="preview-item">
+                    <div class="preview-checkbox"></div>
+                    <span class="preview-label">Book team lunch</span>
+                    <span class="preview-tag tag-todo">Todo</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="features">
+        <div class="feature">
+            <span class="feature-icon">✓</span>
+            <h3>Simple Checking</h3>
+            <p>One click to mark tasks done. Your progress is saved instantly.</p>
+        </div>
+        <div class="feature">
+            <span class="feature-icon">+</span>
+            <h3>Quick Add</h3>
+            <p>Add new tasks in seconds. No friction, no fuss.</p>
+        </div>
+        <div class="feature">
+            <span class="feature-icon">💾</span>
+            <h3>Saved Locally</h3>
+            <p>Your tasks are stored in your browser and persist across visits.</p>
+        </div>
+    </section>
+
+    <footer>© <span id="year"></span> TodoFlow — Keep it simple.</footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

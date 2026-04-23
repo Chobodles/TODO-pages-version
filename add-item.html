@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoFlow — Add Task</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-add">
+
+    <nav>
+        <a href="index.html" class="logo">Todo<span>Flow</span></a>
+        <a href="index.html" class="btn-logout">← Back</a>
+    </nav>
+
+    <main>
+        <div class="card">
+            <a href="index.html" class="back-link">← Back to tasks</a>
+            <p class="card-eyebrow">New task</p>
+            <h1>Add a task</h1>
+
+            <label for="newItem">Task name</label>
+            <input
+                type="text"
+                id="newItem"
+                placeholder="What needs to be done?"
+                autofocus>
+            <div class="form-actions">
+                <button class="btn-primary" onclick="addItem()">Add task →</button>
+                <a href="index.html" class="btn-cancel">Cancel</a>
+            </div>
+            <p id="error" style="color:red;font-size:.85rem;margin-top:.8rem;display:none">Please enter a task name.</p>
+        </div>
+    </main>
+
+    <script>
+        const STORAGE_KEY = 'todoflow_tasks';
+
+        document.getElementById('newItem').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') addItem();
+        });
+
+        function addItem() {
+            const input = document.getElementById('newItem');
+            const name  = input.value.trim();
+            const error = document.getElementById('error');
+
+            if (!name) { error.style.display = 'block'; return; }
+            error.style.display = 'none';
+
+            const tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            tasks.push({ id: Date.now().toString(), name, completed: false });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

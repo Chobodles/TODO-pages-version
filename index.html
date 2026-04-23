@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoFlow — My Tasks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-index">
+
+    <nav>
+        <a href="welcome.html" class="logo">Todo<span>Flow</span></a>
+        <a href="add-item.html" class="btn-add">＋ Add task</a>
+    </nav>
+
+    <main>
+        <div class="page-header">
+            <p class="page-eyebrow">My workspace</p>
+            <h1>My Tasks</h1>
+            <div class="progress-bar-wrap">
+                <div class="progress-label">
+                    <span id="progress-text">0 of 0 completed</span>
+                    <span id="progress-pct">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="all-done" id="all-done">
+            <span>🎉</span> All tasks complete — great work!
+        </div>
+
+        <ul class="todo-list" id="todo-list"></ul>
+
+        <div class="empty" id="empty-state" style="display:none">
+            <span class="empty-icon">📋</span>
+            <h3>No tasks yet</h3>
+            <p>Click <em>Add task</em> above to create your first item.</p>
+        </div>
+    </main>
+
+    <script>
+        const STORAGE_KEY = 'todoflow_tasks';
+
+        function loadTasks() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        }
+
+        function saveTasks(tasks) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+        }
+
+        function render() {
+            const tasks = loadTasks();
+            const list  = document.getElementById('todo-list');
+            const empty = document.getElementById('empty-state');
+            const allDone = document.getElementById('all-done');
+            const fill  = document.getElementById('progress-fill');
+            const pText = document.getElementById('progress-text');
+            const pPct  = document.getElementById('progress-pct');
+
+            const total = tasks.length;
+            const done  = tasks.filter(t => t.completed).length;
+            const pct   = total > 0 ? Math.round(done / total * 100) : 0;
+
+            pText.textContent = `${done} of ${total} completed`;
+            pPct.textContent  = `${pct}%`;
+            fill.style.width  = `${pct}%`;
+
+            allDone.classList.toggle('visible', total > 0 && done === total);
+            empty.style.display = total === 0 ? 'block' : 'none';
+            list.style.display  = total === 0 ? 'none'  : 'block';
+
+            list.innerHTML = tasks.map(task => `
+                <li class="todo-item ${task.completed ? 'completed' : ''}" data-id="${task.id}">
+                    <input
+                        type="checkbox"
+                        id="chk-${task.id}"
+                        ${task.completed ? 'checked' : ''}
+                        onchange="toggleTask('${task.id}')">
+                    <label class="item-label" for="chk-${task.id}">
+                        ${escHtml(task.name)}
+                    </label>
+                    <button class="btn-delete" onclick="deleteTask('${task.id}')" title="Delete task">✕</button>
+                </li>
+            `).join('');
+        }
+
+        function toggleTask(id) {
+            const tasks = loadTasks().map(t =>
+                t.id === id ? { ...t, completed: !t.completed } : t
+            );
+            saveTasks(tasks);
+            render();
+        }
+
+        function deleteTask(id) {
+            if (!confirm('Delete this task?')) return;
+            saveTasks(loadTasks().filter(t => t.id !== id));
+            render();
+        }
+
+        function escHtml(str) {
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        render();
+    </script>
+</body>
+</html>
